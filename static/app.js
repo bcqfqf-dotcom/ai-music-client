@@ -53,6 +53,9 @@
     const volFill = $("vol-fill");
     const volLabel = $("vol-label");
     const btnMute = $("btn-mute");
+    const btnTheme = $("btn-theme");
+    const iconThemeDark = $("icon-theme-dark");
+    const iconThemeLight = $("icon-theme-light");
 
     // Visualizer
     let audioCtx, analyser, sourceNode, gainNode, dataArray;
@@ -99,14 +102,15 @@
             const x = i * (barW + gap);
             const y = h - barH;
 
-            const r = 167 + val * 30;
-            const g = 139 + val * 20;
-            const b = 250;
-            const a = 0.3 + val * 0.7;
+            // Apple Gradient Visualizer: transitions from vibrant Red/Pink to Purple to Soft Blue
+            const grad = ctx.createLinearGradient(0, y, 0, h);
+            grad.addColorStop(0, `rgba(252, 60, 68, ${0.45 + val * 0.55})`);
+            grad.addColorStop(0.5, `rgba(175, 82, 222, ${0.35 + val * 0.55})`);
+            grad.addColorStop(1, `rgba(0, 113, 227, ${0.15 + val * 0.35})`);
 
-            ctx.fillStyle = `rgba(${r|0}, ${g|0}, ${b|0}, ${a})`;
+            ctx.fillStyle = grad;
             ctx.beginPath();
-            ctx.roundRect(x, y, barW, barH, 2 * dpr);
+            ctx.roundRect(x, y, barW, barH, 3 * dpr);
             ctx.fill();
         }
     }
@@ -923,4 +927,24 @@
     setupProgressSync();
     renderFavorites();
     loadSettings();
+
+    // Apple Premium Theme Switcher Logic
+    let currentTheme = localStorage.getItem("theme") || "dark";
+    function applyTheme(theme) {
+        if (theme === "light") {
+            document.body.classList.add("light-theme");
+            iconThemeDark.classList.add("hidden");
+            iconThemeLight.classList.remove("hidden");
+        } else {
+            document.body.classList.remove("light-theme");
+            iconThemeDark.classList.remove("hidden");
+            iconThemeLight.classList.add("hidden");
+        }
+        localStorage.setItem("theme", theme);
+    }
+    btnTheme.addEventListener("click", () => {
+        currentTheme = currentTheme === "dark" ? "light" : "dark";
+        applyTheme(currentTheme);
+    });
+    applyTheme(currentTheme);
 })();
