@@ -929,7 +929,7 @@
     loadSettings();
 
     // Apple Premium Theme Switcher Logic
-    let currentTheme = localStorage.getItem("theme") || "dark";
+    let currentTheme = localStorage.getItem("theme") || "light";
     function applyTheme(theme) {
         if (theme === "light") {
             document.body.classList.add("light-theme");
