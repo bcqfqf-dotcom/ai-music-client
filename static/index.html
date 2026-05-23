@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Music</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                <span>Music</span>
+            </div>
+            <button id="btn-settings" class="icon-btn" title="设置">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            </button>
+        </header>
+
+        <div class="layout">
+            <!-- Left: Player + Playlist -->
+            <div class="left-col">
+                <!-- Player -->
+                <div id="player-area" class="hidden">
+                    <div class="player-card">
+                        <div class="player-visual">
+                            <div id="cover-art">
+                                <img id="cover-img" class="cover-img hidden" alt="">
+                                <div class="cover-placeholder">
+                                    <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                </div>
+                                <canvas id="visualizer" width="300" height="200"></canvas>
+                                <video id="video-player" class="hidden"></video>
+                            </div>
+                        </div>
+                        <div class="player-body">
+                            <div class="now-playing">
+                                <h2 id="now-playing-title">--</h2>
+                                <p id="now-playing-source">--</p>
+                            </div>
+                            <div class="progress-row">
+                                <span id="time-current">0:00</span>
+                                <div class="progress-track">
+                                    <div class="progress-fill" id="progress-fill"></div>
+                                    <input type="range" id="progress-bar" min="0" max="100" value="0">
+                                </div>
+                                <span id="time-total">0:00</span>
+                            </div>
+                            <div class="controls">
+                                <button id="btn-prev" class="ctrl" title="上一首">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                                </button>
+                                <button id="btn-play" class="ctrl play" title="播放/暂停">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="icon-play"><path d="M8 5v14l11-7z"/></svg>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="icon-pause" class="hidden"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                                </button>
+                                <button id="btn-next" class="ctrl" title="下一首">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                                </button>
+                            </div>
+                            <div class="volume-row">
+                                <button id="btn-mute" class="vol-btn" title="静音">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="icon-vol-on"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="icon-vol-off" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                                </button>
+                                <div class="vol-track">
+                                    <div class="vol-fill" id="vol-fill"></div>
+                                    <input type="range" id="volume-slider" min="0" max="100" value="80">
+                                </div>
+                                <span id="vol-label" class="vol-label">80</span>
+                            </div>
+                            <div class="actions">
+                                <button id="btn-mode" class="action-btn">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" id="icon-audio"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" id="icon-video" class="hidden"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                                    <span id="mode-label">音频</span>
+                                </button>
+                                <div id="quality-wrapper" class="quality-wrapper hidden">
+                                    <button id="btn-quality" class="action-btn">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                        <span id="quality-label">1080p</span>
+                                    </button>
+                                    <div id="quality-menu" class="quality-menu hidden">
+                                        <button class="quality-option" data-quality="360p">360p</button>
+                                        <button class="quality-option" data-quality="480p">480p</button>
+                                        <button class="quality-option" data-quality="720p">720p</button>
+                                        <button class="quality-option active" data-quality="1080p">1080p</button>
+                                    </div>
+                                </div>
+                                <button id="btn-fullscreen" class="action-btn hidden">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                                    <span>全屏</span>
+                                </button>
+                                <button id="btn-favorite" class="action-btn">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="icon-fav-empty"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" id="icon-fav-filled" class="hidden"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                                    <span id="fav-label">收藏</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <audio id="audio-player" preload="auto"></audio>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-row">
+                    <button class="tab active" data-tab="results">搜索结果</button>
+                    <button class="tab" data-tab="favorites">我的收藏</button>
+                </div>
+
+                <!-- Results -->
+                <div id="results-panel" class="list-panel">
+                    <div id="results-list" class="song-list"></div>
+                    <div id="results-empty" class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                        <p>搜索你喜欢的音乐</p>
+                        <span>在右侧输入关键词开始</span>
+                    </div>
+                </div>
+
+                <!-- Favorites -->
+                <div id="favorites-panel" class="list-panel hidden">
+                    <div class="fav-search">
+                        <input type="text" id="fav-filter" placeholder="搜索收藏...">
+                    </div>
+                    <div id="favorites-list" class="song-list"></div>
+                    <div id="favorites-empty" class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                        <p>还没有收藏</p>
+                        <span>播放时点击心形图标收藏</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Search -->
+            <div class="right-col">
+                <div class="search-panel">
+                    <h2>你想听什么</h2>
+                    <p class="search-hint">输入歌曲名、歌手或任何描述</p>
+                    <div class="search-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="chat-input" placeholder="周杰伦 晴天" autocomplete="off">
+                        <button id="btn-send">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        </button>
+                    </div>
+                    <div id="status-bar" class="hidden">
+                        <div class="spinner"></div>
+                        <span id="status-text"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-sheet">
+                <div class="modal-head">
+                    <h2>设置</h2>
+                    <button id="btn-close-settings">&times;</button>
+                </div>
+                <div class="modal-content">
+                    <div class="field">
+                        <label>AI 提供商</label>
+                        <select id="cfg-provider">
+                            <option value="openai">OpenAI</option>
+                            <option value="anthropic">Anthropic</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>API Key</label>
+                        <input type="password" id="cfg-api-key" placeholder="sk-...">
+                    </div>
+                    <div class="field">
+                        <label>模型</label>
+                        <input type="text" id="cfg-model" placeholder="gpt-4o-mini">
+                    </div>
+                    <div class="field">
+                        <label>Base URL <span class="hint">可选</span></label>
+                        <input type="text" id="cfg-base-url" placeholder="https://api.openai.com/v1">
+                    </div>
+                    <div class="field">
+                        <label>默认模式</label>
+                        <div class="segmented">
+                            <label class="seg-item active">
+                                <input type="radio" name="cfg-mode" value="audio" checked>
+                                <span>音频</span>
+                            </label>
+                            <label class="seg-item">
+                                <input type="radio" name="cfg-mode" value="video">
+                                <span>视频</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>B站登录 <span class="hint">解锁高清视频</span></label>
+                        <div class="bili-login-area">
+                            <div id="bili-status" class="bili-status">
+                                <span class="bili-dot" id="bili-dot"></span>
+                                <span id="bili-status-text">未登录</span>
+                            </div>
+                            <button type="button" id="btn-bili-qr" class="btn-bili-qr">扫码登录B站</button>
+                        </div>
+                        <div id="qr-area" class="qr-area hidden">
+                            <img id="qr-image" class="qr-image" alt="B站登录二维码">
+                            <p id="qr-status" class="qr-status">请用B站 App 扫描二维码</p>
+                        </div>
+                    </div>
+                    <button id="btn-save-settings" class="btn-save">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

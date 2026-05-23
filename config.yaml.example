@@ -1,0 +1,15 @@
+llm:
+  api_key: ''
+  base_url: ''
+  model: gpt-4o-mini
+  provider: openai
+player:
+  bilibili_sessdata: ''
+  default_mode: audio
+search:
+  fallback_source: douyin
+  max_results: 5
+  preferred_source: bilibili
+server:
+  host: 127.0.0.1
+  port: 8000
