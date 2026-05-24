@@ -7,6 +7,9 @@
     let videoQuality = "1080p";
     let currentVideoInfo = null;
     let animFrameId = null;
+    let smoothData = null;
+    let vizTime = 0;
+    let coverImgObj = null;
     let activePlaylist = "results"; // "results" or "favorites"
     let favoritesPlaylist = [];
 
@@ -87,32 +90,75 @@
         const dpr = window.devicePixelRatio || 1;
         const w = canvas.clientWidth * dpr;
         const h = canvas.clientHeight * dpr;
-        canvas.width = w;
-        canvas.height = h;
+        if (canvas.width !== w || canvas.height !== h) {
+            canvas.width = w;
+            canvas.height = h;
+        }
+
+        if (!smoothData) {
+            smoothData = new Float32Array(dataArray.length);
+        }
+
+        const smoothFactor = 0.1;
+        for (let i = 0; i < dataArray.length; i++) {
+            smoothData[i] += (dataArray[i] / 255 - smoothData[i]) * smoothFactor;
+        }
+
+        vizTime += 0.016;
         ctx.clearRect(0, 0, w, h);
 
-        const bars = dataArray.length;
-        const gap = 2 * dpr;
-        const barW = (w - gap * bars) / bars;
-        const maxH = h * 0.75;
+        // Compute energy bands
+        let bass = 0, mid = 0;
+        const third = Math.floor(smoothData.length / 3);
+        for (let i = 0; i < third; i++) bass += smoothData[i];
+        for (let i = third; i < smoothData.length; i++) mid += smoothData[i];
+        bass = bass / Math.max(third, 1);
+        mid = mid / Math.max(smoothData.length - third, 1);
+        const energy = bass * 0.65 + mid * 0.35;
 
-        for (let i = 0; i < bars; i++) {
-            const val = dataArray[i] / 255;
-            const barH = val * maxH;
-            const x = i * (barW + gap);
-            const y = h - barH;
+        // --- Layer 1: Blurred cover art backdrop ---
+        if (coverImg.src && !coverImg.classList.contains("hidden")) {
+            if (!coverImgObj) {
+                coverImgObj = new Image();
+                coverImgObj.crossOrigin = "anonymous";
+                coverImgObj.src = coverImg.src;
+            } else if (coverImgObj.src !== coverImg.src) {
+                coverImgObj.src = coverImg.src;
+            }
 
-            // Apple Gradient Visualizer: transitions from vibrant Red/Pink to Purple to Soft Blue
-            const grad = ctx.createLinearGradient(0, y, 0, h);
-            grad.addColorStop(0, `rgba(252, 60, 68, ${0.45 + val * 0.55})`);
-            grad.addColorStop(0.5, `rgba(175, 82, 222, ${0.35 + val * 0.55})`);
-            grad.addColorStop(1, `rgba(0, 113, 227, ${0.15 + val * 0.35})`);
-
-            ctx.fillStyle = grad;
-            ctx.beginPath();
-            ctx.roundRect(x, y, barW, barH, 3 * dpr);
-            ctx.fill();
+            if (coverImgObj.complete && coverImgObj.naturalWidth > 0) {
+                ctx.save();
+                ctx.filter = "blur(60px) brightness(0.4)";
+                const imgRatio = coverImgObj.naturalWidth / coverImgObj.naturalHeight;
+                const canvasRatio = w / h;
+                let dw, dh, dx, dy;
+                if (imgRatio > canvasRatio) {
+                    dh = h * 1.3;
+                    dw = dh * imgRatio;
+                } else {
+                    dw = w * 1.3;
+                    dh = dw / imgRatio;
+                }
+                dx = (w - dw) / 2;
+                dy = (h - dh) / 2;
+                const driftX = Math.sin(vizTime * 0.3) * 8 * dpr;
+                const driftY = Math.cos(vizTime * 0.2) * 6 * dpr;
+                ctx.drawImage(coverImgObj, dx + driftX, dy + driftY, dw, dh);
+                ctx.restore();
+            }
         }
+
+        // --- Layer 2: Breathing color wash ---
+        const cx = w / 2, cy = h / 2;
+        const glowR = Math.min(w, h) * (0.5 + bass * 0.12);
+        const breathAlpha = 0.08 + energy * 0.14;
+
+        const wash = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
+        wash.addColorStop(0, `rgba(252, 60, 68, ${breathAlpha})`);
+        wash.addColorStop(0.45, `rgba(175, 82, 222, ${breathAlpha * 0.6})`);
+        wash.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = wash;
+        ctx.fillRect(0, 0, w, h);
     }
 
     function stopVisualizer() {
@@ -121,7 +167,6 @@
             animFrameId = null;
         }
     }
-
     // Helpers
     function formatTime(sec) {
         if (!sec || sec < 0) return "0:00";
@@ -304,7 +349,11 @@
             });
             const data = await resp.json();
             hideStatus();
-            startPlayback(data, item);
+            try {
+                startPlayback(data, item);
+            } catch (e) {
+                showStatus("播放初始化失败");
+            }
         } catch (e) {
             showStatus("播放失败");
         }
@@ -328,7 +377,11 @@
             });
             const data = await resp.json();
             hideStatus();
-            startPlayback(data, item);
+            try {
+                startPlayback(data, item);
+            } catch (e) {
+                showStatus("播放初始化失败");
+            }
         } catch (e) {
             showStatus("播放失败");
         }
@@ -359,6 +412,7 @@
 
         if (playMode === "audio") {
             audioPlayer.src = streamUrl;
+            audioPlayer.onerror = () => { showStatus("音频加载失败"); };
             audioPlayer.play().catch(() => {});
             syncVolume();
             videoPlayer.classList.add("hidden");
@@ -574,7 +628,7 @@
                     coverImg.classList.remove("hidden");
                     visualizer.classList.remove("hidden");
                     initVisualizer();
-                    drawVisualizer();
+                            drawVisualizer();
                     hideStatus();
                 } else {
                     coverImg.classList.add("hidden");

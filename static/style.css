@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 *,
 *::before,
@@ -8,7 +8,7 @@
     box-sizing: border-box;
 }
 
-/* ── Apple Premium Design System ── */
+/* 鈹€鈹€ Apple Premium Design System 鈹€鈹€ */
 :root {
     /* Theme: Apple Dark (Default) */
     --bg: #060608;
@@ -106,7 +106,7 @@ body {
     transition: background 0.5s var(--ease), color 0.5s var(--ease);
 }
 
-/* ── Apple Dynamic Mesh Glow Background ── */
+/* 鈹€鈹€ Apple Dynamic Mesh Glow Background 鈹€鈹€ */
 .bg-glow-wrapper {
     position: fixed;
     inset: 0;
@@ -174,7 +174,7 @@ body {
     z-index: 1;
 }
 
-/* ── Header ── */
+/* 鈹€鈹€ Header 鈹€鈹€ */
 header {
     display: flex;
     align-items: center;
@@ -236,7 +236,7 @@ header {
     transform: scale(0.95) translateY(0);
 }
 
-/* ── Layout Grid ── */
+/* 鈹€鈹€ Layout Grid 鈹€鈹€ */
 .layout {
     display: grid;
     grid-template-columns: 1fr 370px;
@@ -244,7 +244,7 @@ header {
     align-items: start;
 }
 
-/* ── Columns ── */
+/* 鈹€鈹€ Columns 鈹€鈹€ */
 .left-col {
     min-width: 0;
     display: flex;
@@ -257,7 +257,7 @@ header {
     top: 24px;
 }
 
-/* ── Glass Cards ── */
+/* 鈹€鈹€ Glass Cards 鈹€鈹€ */
 .search-panel,
 .player-card,
 .list-panel,
@@ -290,7 +290,7 @@ header {
     margin-bottom: 22px;
 }
 
-/* ── Search Input Box ── */
+/* 鈹€鈹€ Search Input Box 鈹€鈹€ */
 .search-box {
     display: flex;
     align-items: center;
@@ -358,7 +358,7 @@ header {
     transform: scale(0.94);
 }
 
-/* ── Status Bar ── */
+/* 鈹€鈹€ Status Bar 鈹€鈹€ */
 #status-bar {
     display: flex;
     align-items: center;
@@ -388,7 +388,7 @@ body.light-theme .spinner {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Premium Player ── */
+/* 鈹€鈹€ Premium Player 鈹€鈹€ */
 .player-card {
     overflow: hidden;
     animation: fadeUp 0.6s var(--ease);
@@ -404,7 +404,7 @@ body.light-theme .spinner {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.85);
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -423,16 +423,22 @@ body.light-theme .spinner {
 /* Apple Art Drop Reflection glow */
 .cover-img {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    transition: transform 0.6s var(--ease);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 65%;
+    max-width: 65%;
+    object-fit: contain;
+    z-index: 3;
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+    transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease);
 }
 
 .player-visual:hover .cover-img {
-    transform: scale(1.03);
+    transform: translate(-50%, -50%) scale(1.04);
+    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.6);
 }
 
 .cover-placeholder {
@@ -446,8 +452,9 @@ body.light-theme .spinner {
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
+    z-index: 1;
 }
+
 
 #video-player {
     width: 100%;
@@ -483,7 +490,7 @@ body.light-theme .spinner {
     font-weight: 500;
 }
 
-/* ── Apple Minimalist Progress Bar ── */
+/* 鈹€鈹€ Apple Minimalist Progress Bar 鈹€鈹€ */
 .progress-row {
     display: flex;
     align-items: center;
@@ -608,7 +615,7 @@ body.light-theme .progress-track:hover #progress-bar::-webkit-slider-thumb {
 }
 .progress-track:hover #progress-bar::-moz-range-thumb { opacity: 1; }
 
-/* ── Apple Premium Media Controls ── */
+/* 鈹€鈹€ Apple Premium Media Controls 鈹€鈹€ */
 .controls {
     display: flex;
     align-items: center;
@@ -664,7 +671,7 @@ body.light-theme .ctrl.play {
     transform: scale(0.92);
 }
 
-/* ── Premium Volume Slider ── */
+/* 鈹€鈹€ Premium Volume Slider 鈹€鈹€ */
 .volume-row {
     display: flex;
     align-items: center;
@@ -812,7 +819,7 @@ body.light-theme .vol-track::before {
     text-align: right;
 }
 
-/* ── Pill Action Buttons ── */
+/* 鈹€鈹€ Pill Action Buttons 鈹€鈹€ */
 .actions {
     display: flex;
     justify-content: center;
@@ -861,7 +868,7 @@ body.light-theme .vol-track::before {
     background: var(--accent-light) !important;
 }
 
-/* ── Quality Dropdown Menu ── */
+/* 鈹€鈹€ Quality Dropdown Menu 鈹€鈹€ */
 .quality-wrapper {
     position: relative;
 }
@@ -920,7 +927,7 @@ body.light-theme .quality-menu {
     color: var(--accent);
 }
 
-/* ── Apple Segmented Tab Rows ── */
+/* 鈹€鈹€ Apple Segmented Tab Rows 鈹€鈹€ */
 .tabs-row {
     display: flex;
     gap: 4px;
@@ -962,7 +969,7 @@ body.light-theme .tab.active {
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* ── Song List Items ── */
+/* 鈹€鈹€ Song List Items 鈹€鈹€ */
 .list-panel {
     padding: 16px;
     border-radius: var(--radius-lg);
@@ -1091,7 +1098,7 @@ body.light-theme .tab.active {
     opacity: 1;
 }
 
-/* ── Empty State ── */
+/* 鈹€鈹€ Empty State 鈹€鈹€ */
 .empty-state {
     text-align: center;
     padding: 60px 24px;
@@ -1116,7 +1123,7 @@ body.light-theme .tab.active {
     display: block;
 }
 
-/* ── Favorites filter input ── */
+/* 鈹€鈹€ Favorites filter input 鈹€鈹€ */
 .fav-search {
     margin-bottom: 12px;
 }
@@ -1144,7 +1151,7 @@ body.light-theme .tab.active {
     color: var(--text-muted);
 }
 
-/* ── Apple Bottom Sheet Modals ── */
+/* 鈹€鈹€ Apple Bottom Sheet Modals 鈹€鈹€ */
 .modal {
     position: fixed;
     inset: 0;
@@ -1266,7 +1273,7 @@ body.light-theme .tab.active {
     padding-right: 36px;
 }
 
-/* ── Apple Bilibili Login UI ── */
+/* 鈹€鈹€ Apple Bilibili Login UI 鈹€鈹€ */
 .bili-login-area {
     display: flex;
     align-items: center;
@@ -1348,7 +1355,7 @@ body.light-theme .tab.active {
 .qr-status.error { color: var(--red); }
 .qr-status.scanned { color: var(--accent); }
 
-/* ── Apple Segmented Radio Groups ── */
+/* 鈹€鈹€ Apple Segmented Radio Groups 鈹€鈹€ */
 .segmented {
     display: flex;
     background: var(--input-bg);
@@ -1416,7 +1423,7 @@ body.light-theme .seg-item.active {
     transform: translateY(0) scale(0.98);
 }
 
-/* ── Scrollbars ── */
+/* 鈹€鈹€ Scrollbars 鈹€鈹€ */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -1435,12 +1442,12 @@ body.light-theme .seg-item.active {
     background: var(--text-muted);
 }
 
-/* ── Utility Classes ── */
+/* 鈹€鈹€ Utility Classes 鈹€鈹€ */
 .hidden {
     display: none !important;
 }
 
-/* ── Responsive Mobile Styling ── */
+/* 鈹€鈹€ Responsive Mobile Styling 鈹€鈹€ */
 @media (max-width: 800px) {
     .layout {
         grid-template-columns: 1fr;
@@ -1470,7 +1477,7 @@ body.light-theme .seg-item.active {
     }
 }
 
-/* ── Custom Light Theme Modal & Settings Card Contrast Refinements ── */
+/* 鈹€鈹€ Custom Light Theme Modal & Settings Card Contrast Refinements 鈹€鈹€ */
 body.light-theme .modal-sheet {
     background: #ffffff !important;
     border-color: rgba(0, 0, 0, 0.1) !important;
@@ -1538,4 +1545,248 @@ body.light-theme .qr-area {
 
 body.light-theme .qr-status {
     color: #515154 !important;
+}
+
+
+/* ─── Apple Accessibility: Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .bg-glow { animation: none !important; opacity: 0.15; }
+    .bg-glow-wrapper { transition: none !important; }
+    body { transition: none !important; }
+}
+
+/* ─── Apple Refined Typography Scale ─── */
+.search-panel h2 {
+    background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.light-theme .search-panel h2 {
+    background: linear-gradient(135deg, #1d1d1f 0%, #515154 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ─── Apple Enhanced Search Box ─── */
+.search-box {
+    position: relative;
+    overflow: hidden;
+}
+
+.search-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--accent), #af52de, #0071e3);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+    z-index: -1;
+    padding: 1.5px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.search-box:focus-within::before {
+    opacity: 1;
+}
+
+/* ─── Apple Song Item Hover Enhancement ─── */
+.song-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.song-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, transparent, var(--surface-hover), transparent);
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 0.3s, transform 0.5s var(--ease);
+}
+
+.song-item:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ─── Apple Empty State Enhancement ─── */
+.empty-state svg {
+    transition: transform 0.6s var(--ease), opacity 0.6s var(--ease);
+}
+
+.empty-state:hover svg {
+    transform: scale(1.08);
+    opacity: 0.35;
+}
+
+.empty-state p {
+    letter-spacing: -0.01em;
+}
+
+/* ─── Apple Keyboard Focus Indicators ─── */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+.icon-btn:focus-visible,
+.ctrl:focus-visible,
+.action-btn:focus-visible,
+.tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--accent-light);
+}
+
+/* ─── Apple Player Card Hover Glow ─── */
+.player-card {
+    transition: box-shadow 0.5s var(--ease), border-color 0.5s var(--ease);
+}
+
+.player-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-lg), 0 0 60px -20px var(--accent-glow);
+}
+
+/* ─── Apple Smooth Theme Transition ─── */
+.theme-transitioning * {
+    transition-duration: 0.5s !important;
+}
+
+/* ─── Apple Refined Song Playing Indicator ─── */
+.song-item.playing {
+    position: relative;
+}
+
+.song-item.playing::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: var(--accent);
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ─── Apple Additional Responsive: Small Phones ─── */
+@media (max-width: 480px) {
+    #app {
+        padding: 0 12px 32px;
+    }
+
+    header {
+        padding: 16px 0;
+    }
+
+    .search-panel {
+        padding: 20px 16px;
+    }
+
+    .search-panel h2 {
+        font-size: 1.2rem;
+    }
+
+    .search-box input {
+        font-size: 16px; /* Prevent iOS zoom */
+    }
+
+    .player-body {
+        padding: 16px 16px 20px;
+    }
+
+    .now-playing h2 {
+        font-size: 1.05rem;
+    }
+
+    .controls {
+        gap: 12px;
+    }
+
+    .ctrl.play {
+        width: 42px;
+        height: 42px;
+    }
+
+    .volume-row {
+        padding: 0 8px;
+    }
+
+    .song-item {
+        padding: 8px 10px;
+        gap: 10px;
+    }
+
+    .song-thumb {
+        width: 38px;
+        height: 38px;
+    }
+
+    .song-actions {
+        opacity: 1;
+        transform: none;
+    }
+
+    .modal-sheet {
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}
+
+/* ─── Apple Widescreen Enhancement ─── */
+@media (min-width: 1440px) {
+    #app {
+        max-width: 1200px;
+    }
+
+    .layout {
+        grid-template-columns: 1fr 420px;
+        gap: 36px;
+    }
+
+    .search-panel {
+        padding: 36px 32px;
+    }
+
+    .search-panel h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/* ─── Apple Print Styles ─── */
+@media print {
+    .bg-glow-wrapper,
+    .header-ctrls,
+    .search-panel,
+    .controls,
+    .volume-row,
+    .actions,
+    .tabs-row,
+    .song-actions {
+        display: none !important;
+    }
+
+    body {
+        background: #fff;
+        color: #000;
+    }
 }
