@@ -35,15 +35,37 @@ AI Music Client 是一款基于 **FastAPI 后端** 和 **原生 JavaScript/Vanil
 
 ## 🖥️ Windows 桌面客户端
 
-项目包含一个 **原生 Windows 桌面客户端** 版本，位于 [desktop/](desktop/) 目录。
+> **[点击下载最新版](https://github.com/bcqfqf-dotcom/ai-music-client/releases/latest)** — 解压即用，无需安装 Python
 
-桌面版使用 [pywebview](https://pywebview.flowrl.com/) 将 FastAPI 后端封装为原生桌面窗口，支持：
-- 🪟 **原生窗口** — 独立桌面应用，不依赖浏览器
-- 🎨 **自定义图标** — Apple Music 风格红色音符图标
-- 🔇 **无控制台窗口** — 双击直接运行，干净整洁
-- ⚙️ **配置持久化** — 设置和收藏存储在 %APPDATA%\AIMusicDesktop\
+项目包含一个 **原生 Windows 桌面客户端**，使用 [pywebview](https://pywebview.flowrl.com/) 将 FastAPI 后端封装为独立桌面窗口，体验与原生应用一致。
 
-### 快速使用
+### 与 Web 版对比
+
+| 特性 | Web 版 | Desktop 版 |
+|------|--------|-----------|
+| 启动方式 | python main.py + 浏览器 | 双击 AI Music.exe |
+| 窗口 | 浏览器标签页 | 原生桌面窗口 |
+| 自定义图标 | - | Apple Music 风格 |
+| 控制台窗口 | 有 | 无（静默运行） |
+| 配置存储 | 项目目录 | %APPDATA%\AIMusicDesktop\ |
+| 心跳保活 | 浏览器关闭自动退服 | 窗口关闭即退出 |
+| 分发方式 | 需要 Python 环境 | 解压即用 |
+
+### 功能特性
+
+- **原生窗口** — 基于 EdgeChromium 的独立桌面窗口，无浏览器地址栏/标签干扰
+- **自定义图标** — Apple Music 风格红色音符 .ico 图标
+- **静默运行** — 无控制台黑窗，双击直接打开应用界面
+- **配置持久化** — 设置和收藏夹存储在 %APPDATA%\AIMusicDesktop\，重装不丢失
+- **全功能复用** — 搜索、播放、收藏、扫码登录等所有 Web 版功能完整保留
+
+### 环境要求
+
+- **操作系统**: Windows 10 / 11
+- **WebView2 Runtime**: Windows 11 已内置，Windows 10 需 [手动安装](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+- **FFmpeg**: 需安装并加入系统 PATH（scoop install ffmpeg 或 [手动下载](https://ffmpeg.org/download.html)）
+
+### 开发模式运行
 
 `powershell
 cd desktop
@@ -60,7 +82,9 @@ pyinstaller build\ai-music-desktop.spec --noconfirm
 # 输出: dist\AI Music\AI Music.exe
 `
 
-> 详见 [desktop/README.md](desktop/README.md)
+或将整个 dist\AI Music\ 文件夹打包为 ZIP 分发给其他用户，无需安装 Python。
+
+> 完整文档见 [desktop/README.md](desktop/README.md)
 
 ---
 
