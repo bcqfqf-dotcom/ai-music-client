@@ -33,6 +33,37 @@ AI Music Client 是一款基于 **FastAPI 后端** 和 **原生 JavaScript/Vanil
 
 ---
 
+## 🖥️ Windows 桌面客户端
+
+项目包含一个 **原生 Windows 桌面客户端** 版本，位于 [desktop/](desktop/) 目录。
+
+桌面版使用 [pywebview](https://pywebview.flowrl.com/) 将 FastAPI 后端封装为原生桌面窗口，支持：
+- 🪟 **原生窗口** — 独立桌面应用，不依赖浏览器
+- 🎨 **自定义图标** — Apple Music 风格红色音符图标
+- 🔇 **无控制台窗口** — 双击直接运行，干净整洁
+- ⚙️ **配置持久化** — 设置和收藏存储在 %APPDATA%\AIMusicDesktop\
+
+### 快速使用
+
+`powershell
+cd desktop
+pip install -r requirements.txt
+python desktop_app.py
+`
+
+### 打包为 .exe
+
+`powershell
+cd desktop
+pip install -r requirements.txt
+pyinstaller build\ai-music-desktop.spec --noconfirm
+# 输出: dist\AI Music\AI Music.exe
+`
+
+> 详见 [desktop/README.md](desktop/README.md)
+
+---
+
 ## ⚙️ 快速开始
 
 ### 1. 克隆项目
@@ -90,6 +121,7 @@ python main.py
 
 ```text
 ai-music-client/
+├── desktop/              # 🖥️ Windows 桌面客户端 (pywebview)
 ├── agents/             # AI 智能体检索逻辑 (音乐推荐等)
 ├── player/             # 媒体提取底层 (yt-dlp、FFmpeg 合并流等)
 ├── routers/            # FastAPI 路由控制器 (B站扫码、播放接口、Sse心跳)

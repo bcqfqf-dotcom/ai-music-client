@@ -1,0 +1,22 @@
+# Build output
+dist/
+build/*.py
+build/app_preview.png
+build/*.spec.bak
+
+# Python
+__pycache__/
+*.py[cod]
+*.log
+
+# Virtual environments
+venv/
+.venv/
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
