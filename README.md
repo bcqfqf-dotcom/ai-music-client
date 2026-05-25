@@ -6,6 +6,8 @@
 
 AI Music Client 是一款基于 **FastAPI 后端** 和 **原生 JavaScript/Vanilla CSS 前端** 构建的高清音视频播放器。项目深度融合了现代 AI 设计与现代 Apple 苹果视觉规范（macOS/iOS Apple Music UI），支持在 B站（Bilibili）和抖音（Douyin）上智能检索、流式播放音乐和视频，并提供免打扰、安全的扫码高清解锁方案。
 
+同时，本项目已深度适配并集成了 **Windows 原生桌面客户端** 架构，可打包为免安装的单文件独立桌面应用，完美复用全部的高清流提取和 Apple 风格交互质感。
+
 ---
 
 ## 🎨 界面视觉亮点 (Premium Apple Aesthetics)
@@ -33,7 +35,7 @@ AI Music Client 是一款基于 **FastAPI 后端** 和 **原生 JavaScript/Vanil
 
 ---
 
-## 🖥️ Windows 桌面客户端
+## 🖥️ Windows 原生桌面客户端
 
 > **[点击下载最新版](https://github.com/bcqfqf-dotcom/ai-music-client/releases/latest)** — 解压即用，无需安装 Python
 
@@ -43,52 +45,61 @@ AI Music Client 是一款基于 **FastAPI 后端** 和 **原生 JavaScript/Vanil
 
 | 特性 | Web 版 | Desktop 版 |
 |------|--------|-----------|
-| 启动方式 | python main.py + 浏览器 | 双击 AI Music.exe |
-| 窗口 | 浏览器标签页 | 原生桌面窗口 |
-| 自定义图标 | - | Apple Music 风格 |
-| 控制台窗口 | 有 | 无（静默运行） |
-| 配置存储 | 项目目录 | %APPDATA%\AIMusicDesktop\ |
-| 心跳保活 | 浏览器关闭自动退服 | 窗口关闭即退出 |
-| 分发方式 | 需要 Python 环境 | 解压即用 |
+| 启动方式 | `python main.py` + 浏览器访问 | 双击 `AI Music.exe` |
+| 运行窗口 | 浏览器标签页 | 原生桌面窗口 |
+| 自定义图标 | - | Apple Music 风格红色音量音符 |
+| 配置与收藏存储 | 项目所在本地目录 | `%APPDATA%\AIMusicDesktop\` |
+| 心跳保活 | 浏览器关闭自动退服 | 桌面窗口关闭即自动退出整个进程 |
+| 分发方式 | 需要 Python 环境与手动拉起进程 | 打包为绿色免安装单文件夹分发 |
 
 ### 功能特性
 
-- **原生窗口** — 基于 EdgeChromium 的独立桌面窗口，无浏览器地址栏/标签干扰
-- **自定义图标** — Apple Music 风格红色音符 .ico 图标
-- **静默运行** — 无控制台黑窗，双击直接打开应用界面
-- **配置持久化** — 设置和收藏夹存储在 %APPDATA%\AIMusicDesktop\，重装不丢失
-- **全功能复用** — 搜索、播放、收藏、扫码登录等所有 Web 版功能完整保留
-
-### 环境要求
-
-- **操作系统**: Windows 10 / 11
-- **WebView2 Runtime**: Windows 11 已内置，Windows 10 需 [手动安装](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
-- **FFmpeg**: 需安装并加入系统 PATH（scoop install ffmpeg 或 [手动下载](https://ffmpeg.org/download.html)）
+* **原生独立窗口** — 基于 Edge Chromium 内核的高性能 WebView2 独立桌面窗口，免受浏览器地址栏与多标签页干扰。
+* **自定义应用图标** — 带有 Apple Music 风格的高清红色音量音符应用图标。
+* **配置与数据隔离** — 设置和收藏夹数据自动存储在系统 `%APPDATA%\AIMusicDesktop\` 下，重装或升级程序时您的收藏列表和 session 配置不会丢失。
+* **全功能高保真** — 搜索、音视频流合成、本地收藏、B站安全扫码登录等核心逻辑完全保留。
 
 ### 开发模式运行
 
-`powershell
+在 `desktop/` 目录下准备运行：
+
+```powershell
 cd desktop
 pip install -r requirements.txt
 python desktop_app.py
-`
+```
 
-### 打包为 .exe
+### 打包构建为 .exe
 
-`powershell
+如需将桌面端打包为独立的 `.exe` 进行发布，请在 `desktop/` 目录下执行一键构建脚本或手动执行 PyInstaller 构建：
+
+#### 1. 一键构建脚本 (推荐)
+```powershell
+cd desktop
+.\build.ps1
+```
+
+#### 2. 手动构建命令
+```powershell
 cd desktop
 pip install -r requirements.txt
 pyinstaller build\ai-music-desktop.spec --noconfirm
-# 输出: dist\AI Music\AI Music.exe
-`
+```
 
-或将整个 dist\AI Music\ 文件夹打包为 ZIP 分发给其他用户，无需安装 Python。
+构建成功后，将在 `desktop/dist/AI Music/` 目录下生成打包好的免安装程序，包含：
+* `AI Music.exe` — 主可执行程序
+* 所有关联的底层依赖 DLL 和网页静态资源文件
 
-> 完整文档见 [desktop/README.md](desktop/README.md)
+将整个 `dist\AI Music` 目录压缩为 ZIP 即可方便地分发给其他 Windows 10/11 用户使用。
+
+> 💡 **桌面端环境要求：**
+> * **操作系统**: Windows 10 / 11
+> * **WebView2 Runtime**: Windows 11 已默认内置，部分 Windows 10 用户若无法加载窗口需 [手动安装 Edge WebView2](https://developer.microsoft.com/zh-cn/microsoft-edge/webview2/)。
+> * **FFmpeg**: 需安装并加入系统 `PATH`。
 
 ---
 
-## ⚙️ 快速开始
+## ⚙️ 快速开始 (Web 版)
 
 ### 1. 克隆项目
 
@@ -145,7 +156,12 @@ python main.py
 
 ```text
 ai-music-client/
-├── desktop/              # 🖥️ Windows 桌面客户端 (pywebview)
+├── desktop/            # 🖥️ Windows 原生桌面客户端项目
+│   ├── build/          # 打包所需图标（app.ico）及 spec 文件
+│   ├── config.py       # 桌面版专有配置管理器（指向 %APPDATA%）
+│   ├── desktop_app.py  # 桌面客户端入口（pywebview 绑定）
+│   ├── build.ps1       # 一键打包自动化构建 PowerShell 脚本
+│   └── README.md       # 桌面客户端专有文档
 ├── agents/             # AI 智能体检索逻辑 (音乐推荐等)
 ├── player/             # 媒体提取底层 (yt-dlp、FFmpeg 合并流等)
 ├── routers/            # FastAPI 路由控制器 (B站扫码、播放接口、Sse心跳)
@@ -155,7 +171,7 @@ ai-music-client/
 │   ├── index.html      # trans-glass 苹果网页视图
 │   └── style.css       # 苹果 UI 样式、明暗变量与光影关键帧
 ├── config.py           # 动态掩码配置读取模块
-├── config.yaml.example # 干净的配置文件模版 [NEW]
+├── config.yaml.example # 干净的配置文件模版
 ├── favorites.json      # 您的个人收藏夹数据库 (本地独有，已忽略)
 ├── main.py             # FastAPI 服务入口
 └── requirements.txt    # 依赖声明
